@@ -3,7 +3,7 @@ networks:
     name: vlad-yakovlev-dev
 
 services:
-  nginx-proxy:
+  nginx:
     image: nginxproxy/nginx-proxy
     networks:
       - vlad-yakovlev-dev
@@ -20,12 +20,14 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: always
 
-  acme-companion:
+  nginx-acme:
     image: nginxproxy/acme-companion
     networks:
       - vlad-yakovlev-dev
     environment:
       - DEFAULT_EMAIL=vlad309523@gmail.com
+    volumes_from:
+      - nginx
     volumes:
       - $PWD/certs:/etc/nginx/certs:rw
       - $PWD/acme:/etc/acme.sh
